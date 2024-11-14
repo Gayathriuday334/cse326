@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Skills</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Available Skills</h1>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="skills.html">Skill Listings</a>
+      <a href="your.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="skills-list">
+      <h2>User Profiles</h2>
+      <ul id="skillsContainer"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Skill Swap. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Retrieve user profiles from localStorage
+    const profiles = JSON.parse(localStorage.getItem('userProfiles')) || [];
+
+    // Display profiles
+    function displayUserProfiles() {
+      const skillsContainer = document.getElementById('skillsContainer');
+      skillsContainer.innerHTML = ''; // Clear existing profiles
+
+      // Example profiles
+      const defaultProfiles = [
+        {
+          name: "John Doe",
+          image: "john.jpg",
+          skills: "HTML, CSS, JavaScript, Python",
+          about: "Experienced in building responsive web applications.",
+          offeredSkills: "Web Development"
+        },
+        {
+          name: "Jane Smith",
+          image: "jane.jpg",
+          skills: "Digital Art, Branding, Marketing",
+          about: "Specializes in creating visually appealing designs.",
+          offeredSkills: "Graphic Design"
+        }
+      ];
+
+      // Display default profiles
+      defaultProfiles.forEach((profile, index) => {
+        const skillItem = createProfileItem(profile, index);
+        skillsContainer.appendChild(skillItem);
+      });
+
+      // Display user profiles from localStorage
+      profiles.forEach((profile, index) => {
+        const skillItem = createProfileItem(profile, index + 2); // Adjust index for user profiles
+        skillsContainer.appendChild(skillItem);
+      });
+    }
+
+    // Create a profile item
+    function createProfileItem(profile, index) {
+      const skillItem = document.createElement('li');
+      skillItem.className = 'skill-item';
+
+      skillItem.innerHTML = `
+        <img src="${profile.image}" alt="${profile.name}" class="profile-pic">
+        <div class="skill-info">
+          <strong>${profile.name}</strong> offers <em>${profile.offeredSkills}</em>
+          <p>${profile.about}</p>
+          <button class="view-profile" data-index="${index}">View Profile</button>
+          <button class="delete-profile" data-index="${index}">Delete</button>
+        </div>
+      `;
+
+      // Add event listener for viewing profile
+      skillItem.querySelector('.view-profile').addEventListener('click', () => {
+        window.location.href = `profile.html?index=${index}`;
+      });
+
+      // Add event listener for deleting profile
+      skillItem.querySelector('.delete-profile').addEventListener('click', () => {
+        deleteProfile(index);
+      });
+
+      return skillItem;
+    }
+
+    // Delete profile function
+    function deleteProfile(index) {
+      if (index < 2) {
+        alert("You cannot delete the default profiles.");
+        return;
+      }
+
+      // Adjust index for user profiles
+      const adjustedIndex = index - 2; // because user profiles start from index 2
+
+      // Remove user profile from localStorage
+      profiles.splice(adjustedIndex, 1); // Remove the profile from the array
+      localStorage.setItem('userProfiles', JSON.stringify(profiles)); // Save updated profiles
+
+      // Refresh the displayed profiles
+      displayUserProfiles();
+    }
+
+    displayUserProfiles();
+  </script>
+</body>
+</html>

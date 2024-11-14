@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Swap - Home</title>
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+
+}
+
+header {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background-image: url('hero-background.jpg'); /* Add your background image */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
+.button {
+  background: #ff5722;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background: #e64a19;
+}
+
+.about {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+  </style>
+</head>
+<body>
+  <!-- Header and Navigation -->
+  <header>
+    <h1>Skill Swap</h1>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="skills.html">Skill Listings</a>
+      <a href="your.html">Profile</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section with Background Image -->
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Discover and Share Skills</h2>
+        <p>Connect, learn, and grow by exchanging skills with others in the community.</p>
+        <button class="button" id="exploreSkills">Explore Skills</button>
+      </div>
+    </section>
+
+    <section class="about">
+      <h3>How It Works</h3>
+      <p>Post a skill you offer, find others with skills to share, and join a community of learners and mentors.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Skill Swap. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('exploreSkills').addEventListener('click', function() {
+  window.location.href = 'skills.html'; // Redirects to the Skills page
+});
+  </script>
+</body>
+</html>

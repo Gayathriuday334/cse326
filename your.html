@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create User Profile</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Create Your Profile</h1>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="skills.html">Skill Listings</a>
+      <a href="your.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile-form">
+      <h2>Fill out your profile</h2>
+      <form id="userProfileForm" onsubmit="submitProfile(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="image">Profile Image URL:</label>
+        <input type="text" id="image" name="image" required>
+
+        <label for="skills">Skills:</label>
+        <input type="text" id="skills" name="skills" required>
+
+        <label for="about">About:</label>
+        <textarea id="about" name="about" required></textarea>
+
+        <label for="offeredSkills">Offered Skills:</label>
+        <input type="text" id="offeredSkills" name="offeredSkills" required>
+
+        <label for="Upload Video">Upload Video:</label>
+
+        <input type="text" id="Upload Video" name="upload video" required>
+
+        <button type="submit">Save Profile</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Skill Swap. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function submitProfile(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Get form data
+      const name = document.getElementById('name').value;
+      const image = document.getElementById('image').value;
+      const skills = document.getElementById('skills').value;
+      const about = document.getElementById('about').value;
+      const offeredSkills = document.getElementById('offeredSkills').value;
+
+      // Create user profile object
+      const userProfile = {
+          name,
+          image,
+          skills,
+          about,
+          offeredSkills
+      };
+
+      // Retrieve existing profiles from localStorage
+      const profiles = JSON.parse(localStorage.getItem('userProfiles')) || [];
+      profiles.push(userProfile); // Add new profile to the array
+      localStorage.setItem('userProfiles', JSON.stringify(profiles)); // Save updated profiles
+
+      // Reset the form
+      document.getElementById('userProfileForm').reset();
+
+      // Redirect to skills.html
+      window.location.href = 'skills.html';
+    }
+  </script>
+</body>
+</html>

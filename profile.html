@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Basic styles for the popup */
+    .popup {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .profile-pic-large {
+      width: 150px; /* Adjust size as needed */
+      height: auto;
+      border-radius: 50%; /* Make it circular */
+    }
+    video {
+      width: 600px;
+      height: 400px; /* Adjust height as needed */
+      margin-top: 20px;
+    }
+    .file-upload-container {
+      margin-top: 10px;
+    }
+    .file-download-container {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>User Profile</h1>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="skills.html">Skill Listings</a>
+      <a href="your.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile">
+      <img id="profileImage" src="" alt="Profile Picture" class="profile-pic-large">
+      <h2 id="profileName"></h2>
+      <p><strong>Skills:</strong> <span id="profileSkills"></span></p>
+      <p><strong>About:</strong> <span id="profileAbout"></span></p>
+      <p><strong>Offered Skills:</strong> <span id="profileOfferedSkills"></span></p>
+      
+      <!-- Video Element for Default Video -->
+      <video id="uploadedVideo" controls>
+        <source id="videoSource" src="HTML in 5 minutes.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      
+      <!-- File Upload -->3
+      <div class="file-upload-container">
+        <label for="fileInput">Upload Video File:</label>
+        <input type="file" id="fileInput" accept="video/*">
+      </div>
+      
+      <!-- File Download -->
+      <div class="file-download-container">
+        <a id="fileDownloadLink" href="" download style="display: none;">Download File</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Popup for asking to send remaining part of video -->
+  <div class="popup" id="videoPopup">
+    <div class="popup-content">
+      <p>The video has completed. Would you like to send the total videos of the topic?</p>
+      <button onclick="showEmailInput()">Yes</button>
+      <button onclick="closePopup()">No</button>
+      
+      <!-- Email Input Section -->
+      <div id="emailInputSection" style="display: none; margin-top: 10px;">
+        <label for="emailInput">Enter your email:</label>
+        <input type="email" id="emailInput" placeholder="Your email address">
+        <button onclick="submitEmail()">Submit</button>
+      </div>
+      
+      <!-- Response Message -->
+      <p id="responseMessage" style="display: none; margin-top: 10px;"></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 Skill Swap. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Function to get URL parameters
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      const regex = /([^&=]+)=([^&]*)/g;
+      let m;
+      while (m = regex.exec(queryString)) {
+        params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+      }
+      return params;
+    }
+
+    // Display the user profile
+    function displayUserProfile() {
+      const params = getQueryParams();
+      const profileIndex = params.index;
+
+      // Default profiles with video links
+      const defaultProfiles = [
+        {
+          name: "John Doe",
+          image: "john.jpg", // Ensure this image file exists
+          skills: "HTML, CSS, JavaScript, Python",
+          about: "Experienced in building responsive web applications.",
+          offeredSkills: "Web Development",
+          video: "HTML in 5 minutes.mp4" // Correctly set to the local video file
+        },
+ {
+          name: "Jane smith",
+          image: "jane.jpg", // Ensure this image file exists
+          skills: "Java, Spring, Hibernate",
+          about: " Experienced in building scalable enterprise applications.",
+          offeredSkills: "Java Development",
+          video: "java.mp4" // Correctly set to the local video file
+        }
+      ];
+
+      const profile = defaultProfiles[profileIndex];
+      document.getElementById('profileImage').src = profile.image;
+      document.getElementById('profileName').textContent = profile.name;
+      document.getElementById('profileSkills').textContent = profile.skills;
+      document.getElementById('profileAbout').textContent = profile.about;
+      document.getElementById('profileOfferedSkills').textContent = profile.offeredSkills;
+    }
+
+    // Handle file upload
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const videoElement = document.getElementById('uploadedVideo');
+        const sourceElement = document.getElementById('videoSource');
+        const downloadLink = document.getElementById('fileDownloadLink');
+        
+        // Create a URL for the uploaded file
+        const fileURL = URL.createObjectURL(file);
+        
+        // Set the source of the video element to the uploaded file
+        sourceElement.src = fileURL;
+        videoElement.load(); // Load the new video source
+        
+        // Show the video player
+        videoElement.style.display = 'block'; 
+        
+        // Set up the download link
+        downloadLink.href = fileURL;
+        downloadLink.download = file.name;
+        downloadLink.style.display = 'block'; // Show the download link
+      }
+    });
+
+    // Function to show the email input section
+    function showEmailInput() {
+      document.getElementById('emailInputSection').style.display = 'block';
+    }
+
+    // Function to submit the email
+    function submitEmail() {
+      const emailInput = document.getElementById('emailInput');
+      const responseMessage = document.getElementById('responseMessage');
+      
+      // Validate the email address
+      if (emailInput.value.trim() !== '') {
+        responseMessage.textContent = 'Your content will be sent in a few minutes!';
+        responseMessage.style.display = 'block';
+      } else {
+        responseMessage.textContent = 'Please enter a valid email address!';
+        responseMessage.style.display = 'block';
+      }
+    }
+
+    // Function to close the popup
+    function closePopup() {
+      document.getElementById('videoPopup').style.display = 'none';
+    }
+
+    // Display the user profile
+    displayUserProfile();
+
+    // Add event listener for video completion
+    document.getElementById('uploadedVideo').addEventListener('ended', function() {
+      // Show the popup when the video ends
+      document.getElementById('videoPopup').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
